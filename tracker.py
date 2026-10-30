@@ -1,95 +1,88 @@
-# Project: Expense Tracker - Installment 4
+# Project: Expense Tracker - Installment 5
 # Author: Kier Justine Baldomero
-# Description: Prompts the user for two expenses, calculates subtotal, average, tax, grand total, and tracks budget with verdict messages.
+# Description: A menu-driven expense tracker that calculates subtotal, tax, grand total, and budget verdict.
 
+# 1. Header at banner po, ipi-print isang beses lang sa umpisa
 print("=" * 40)
 print("\tEXPENSE TRACKER")
 print("   Know where your money goes.")
 print("=" * 40)
 
-print("MAIN MENU")
-print(f"[1] {'Add an expense':<20} (coming soon)")
-print(f"[2] {'View all expenses':<20} (coming soon)")
-print(f"[3] {'Show total spent':<20} (coming soon)")
-print(f"[4] {'Exit':<20} (coming soon)")
-
-name = input("\nWhat's your name? ")
-print(f"Welcome, {name}! Let's log two expenses.")
-
-# 2. Mag start po yung subtotal sa 0
-subtotal = 0
-
-# First expense
-item1 = input("First expense? ")
-amount1 = float(input("Amount? "))
-# i-update po yung subtotal after reading the amount (subtotal named only once per update)
-subtotal = subtotal + amount1
-
-# Print size message for the first amount
-if amount1 > 200:
-    print("  Huge expense - are you sure?")
-elif amount1 > 100:
-    print("  Big expense.")
-elif amount1 > 50:
-    print("  Moderate expense.")
-else:
-    print("  Small expense.")
-
-# Second expense
-item2 = input("Second expense? ")
-amount2 = float(input("Amount? "))
-# i-update po ulit yung subtotal after reading the amount
-subtotal = subtotal + amount2
-
-# Print size message for the second amount
-if amount2 > 200:
-    print("  Huge expense - are you sure?")
-elif amount2 > 100:
-    print("  Big expense.")
-elif amount2 > 50:
-    print("  Moderate expense.")
-else:
-    print("  Small expense.")
-
-# Print two-big warning if both amounts exceed 100
-if amount1 > 100 and amount2 > 100:
-    print("  Two big expenses in a row - slow down!")
-
-# 3. Compute po yung average sa subtotal 
-average = subtotal / 2
-
-# 4. Ask for tax rate as a whole number then compute sa tax and grand total
+# 2. Tanungin po yung name, tax rate, at budget isang beses lang bago magsimula yung menu
+name = input("What's your name? ")
 tax_percent = float(input("Tax rate %? "))
-tax = subtotal * (tax_percent / 100)
-total = subtotal + tax
-
-# 5. Ask for a budget then store whether grand total is over budget
 budget = float(input("Your budget? "))
-over_budget = total > budget  # Computed from variables, not hardcoded
+print(f"Welcome, {name}!")
 
-# 6. Compute what is left in budget
-left = budget - total
+# I-initialize po yung mga variables para sa tracking
+subtotal = 0
+count = 0
 
-# 7. SUMMARY lines
-print("-" * 40)
-print("SUMMARY")
-# 8. Values lined up with \t
-print(f"- {item1}:\t${amount1}")
-print(f"- {item2}:\t${amount2}")
-print(f"Subtotal:\t${subtotal}")
-print(f"Average:\t${average}")
-print(f"Tax ({tax_percent}%):\t${tax}")
-print(f"Grand total:\t${total}")
-
-# Verdict logic (Exactly one verdict line, no negative amounts)
-if over_budget:
-    excess = total - budget
-    print(f"Over budget by ${excess}!")
-elif total > (budget * 0.90):
-    print(f"Careful: only ${left} left.")
-else:
-    print(f"Within budget. ${left} left.")
-
-print("-" * 40)
-
-print(f"Made by: Kier Justine Baldomero  |  Installment 4")
+# Main loop po: Ito po yung nagpapaulit-ulit ng menu hangga't hindi pinipili yung exit.
+# Kailangan po ito kasi bawal i-copy paste yung menu text, dapat isang beses lang nakasulat sa code.
+while True:
+    # 3. Ipakita po yung MAIN MENU (ito lang po yung beses na naka-code yung menu)
+    print("\nMAIN MENU")
+    print("  [1] Add an expense")
+    print("  [2] View all expenses (coming soon)")
+    print("  [3] Show total spent")
+    print("  [4] Exit")
+    
+    # Kunin po yung choice as string para kahit 'abc' o '7' ang i-type, hindi mag-crash
+    choice = input("Choose 1-4: ")
+    
+    # Option 1 po: Mag-add ng expense
+    if choice == "1":
+        amount = float(input("Amount? "))
+        
+        # I-update po yung subtotal after reading the amount (subtotal named only once per update)
+        subtotal = subtotal + amount
+        count = count + 1
+        
+        # Size-message decision po (naka-code lang isang beses)
+        if amount > 200:
+            print("  Huge expense - are you sure?")
+        elif amount > 100:
+            print("  Big expense.")
+        elif amount > 50:
+            print("  Moderate expense.")
+        else:
+            print("  Small expense.")
+            
+    # Option 2 po: Coming soon message
+    elif choice == "2":
+        print("  Coming soon: the tracker can't remember each item yet.")
+        
+    # Option 3 po: Ipakita yung total spent at verdict
+    elif choice == "3":
+        # Compute po yung tax at total
+        tax = subtotal * (tax_percent / 100)
+        total = subtotal + tax
+        left = budget - total
+        
+        # I-print po yung summary na aligned (Expenses, Subtotal, Tax, Grand total)
+        print(f"  Expenses:   {count}")
+        print(f"  Subtotal:   ${subtotal}")
+        print(f"  Tax ({tax_percent}%): ${tax}")
+        print(f"  Grand total: ${total}")
+        
+        # Verdict logic po (Exactly one verdict line, no negative amounts)
+        if total > budget:
+            excess = total - budget
+            print(f"  Over budget by ${excess}!")
+        elif total > (budget * 0.90):
+            print(f"  Careful: only ${left} left.")
+        else:
+            print(f"  Within budget. ${left} left.")
+            
+    # Option 4 po: Exit na tayo, dito lang po dapat natatapos yung program
+    elif choice == "4":
+        print(f"Goodbye, {name}!")
+        print("-" * 40)
+        print("Made by: Kier Justine Baldomero  |  Installment 5")
+        print("=" * 40)
+        break
+        
+    # Anything else po na hindi 1, 2, 3, o 4 (like 7 or abc)
+    else:
+        print("  Please choose 1, 2, 3 or 4.")
